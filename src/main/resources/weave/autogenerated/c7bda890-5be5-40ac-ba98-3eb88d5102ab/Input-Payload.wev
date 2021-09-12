@@ -1,0 +1,17 @@
+%dw 2.0
+
+type auto_c7bda890_5be5_40ac_ba98_3eb88d5102ab_Input_Payload = {
+  departureTime: String, 
+  passengerName: String, 
+  flightCode: String, 
+  passengerIdProof: String, 
+  flightId: String, 
+  currency: String, 
+  departureDate: String, 
+  bookingdate: String, 
+  bookingId?: String, 
+  seatsBooked: Number, 
+  pricePerSeat: Number, 
+  _?: Any
+}
+

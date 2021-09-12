@@ -120,101 +120,22 @@ output application/json
             </on-error-propagate>
         </error-handler>
     </flow>
-    <flow name="put:\bookings\(bookingId):application\json:indigo-flights-sapi-config">
-        <ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core">
-            <ee:variables>
-                <ee:set-variable variableName="bookingId">attributes.uriParams.'bookingId'</ee:set-variable>
-            </ee:variables>
-        </ee:transform>
-        <ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
-            <ee:message>
-                <ee:set-payload><![CDATA[%dw 2.0
-output application/json
----
-{
-  flightId: "2214",
-  flightCode: "6E",
-  departureDate: "2021/09/26",
-  departureTime: "09:00",
-  passengerName: "Akshay Kapoor",
-  passengerIdProof: "AFRGT0245R",
-  seatsBooked: 3,
-  pricePerSeat: 4500,
-  currency: "INR",
-  bookingdate: "2021/09/12"
-}]]></ee:set-payload>
-            </ee:message>
-        </ee:transform>
+    <flow name="put:\bookings\(bookingId):application\json:indigo-flights-sapi-config" doc:id="6eddd8c7-6a10-468c-a55a-e3338be9dc67">
+		<flow-ref doc:name="putBookingByBookingIdFlow" doc:id="b36a66cc-b570-42d5-820d-249f05645b5b" name="updateBookingByBookingIdFlow"/>
     </flow>
     <flow name="delete:\bookings\(bookingId):indigo-flights-sapi-config">
-        <ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core">
-            <ee:variables>
-                <ee:set-variable variableName="bookingId">attributes.uriParams.'bookingId'</ee:set-variable>
-            </ee:variables>
-        </ee:transform>
-        <ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
-            <ee:message>
-                <ee:set-payload><![CDATA[%dw 2.0
-output application/json
----
-{
-  message: "booking cancelled!!!"
-}]]></ee:set-payload>
-            </ee:message>
-        </ee:transform>
+		<flow-ref doc:name="deleteBookingByBookingIdFlow" doc:id="ae210fbf-87eb-4269-a3ac-1d70b82ba243" name="deleteBookingByBookingIdFlow"/>
     </flow>
     <flow name="get:\flights:indigo-flights-sapi-config">
         <flow-ref doc:name="getFlightsFlow" doc:id="9ef35512-574b-45ba-b680-8b79aa979ea4" name="getFlightsFlow" />
     </flow>
     <flow name="get:\bookings\(bookingId):indigo-flights-sapi-config">
-        <ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core">
-            <ee:variables>
-                <ee:set-variable variableName="bookingId">attributes.uriParams.'bookingId'</ee:set-variable>
-            </ee:variables>
-        </ee:transform>
-        <ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
-            <ee:message>
-                <ee:set-payload><![CDATA[%dw 2.0
-output application/json
----
-{
-  flightId: "2214",
-  flightCode: "6E",
-  departureDate: "2021/09/26",
-  departureTime: "09:00",
-  passengerName: "Akshay Kapoor",
-  passengerIdProof: "AFRGT0245R",
-  seatsBooked: 3,
-  pricePerSeat: 4500,
-  currency: "INR",
-  bookingdate: "2021/09/12"
-}]]></ee:set-payload>
-            </ee:message>
-        </ee:transform>
+		<flow-ref doc:name="getBookingDetailsByBookingIdFlow" doc:id="4e8fd2ae-190e-45d9-85ee-70f3b3ac4807" name="getBookingDetailsByBookingIdFlow"/>
     </flow>
     <flow name="get:\flights\(flightId):indigo-flights-sapi-config">
         <flow-ref doc:name="getFlightsByIdFlow" doc:id="ba949d2d-88dc-4448-9a2e-bf8a5b769f1b" name="getFlightsByIdFlow"/>
     </flow>
     <flow name="post:\bookings:application\json:indigo-flights-sapi-config">
-        <ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
-            <ee:message>
-                <ee:set-payload><![CDATA[%dw 2.0
-output application/json
----
-{
-  bookingId: "IDGO6E20210926-0002",
-  flightId: "2214",
-  flightCode: "6E",
-  departureDate: "2021/09/26",
-  departureTime: "09:00",
-  passengerName: "Akshay Kapoor",
-  passengerIdProof: "AFRGT0245R",
-  seatsBooked: 3,
-  pricePerSeat: 4500,
-  currency: "INR",
-  bookingdate: "2021/09/12"
-}]]></ee:set-payload>
-            </ee:message>
-        </ee:transform>
+		<flow-ref doc:name="postBookingFlow" doc:id="d5988813-bf29-44e2-b5b2-b1d9bab3dd00" name="postBookingFlow"/>
     </flow>
 </mule>
