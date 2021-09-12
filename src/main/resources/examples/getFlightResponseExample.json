@@ -1,0 +1,15 @@
+{
+  "flightId": 2312,
+  "flightCode": "6E",
+  "departureDate": "2021/10/26",
+  "departureTime": "09:00",
+  "source": "delhi",
+  "destination": "kolkata",
+  "availableSeats": 120,
+  "price": 3000,
+  "currency": "INR",
+  "plane": {
+    "type": "Boeing 737",
+    "totalSeats": 150
+  }
+}

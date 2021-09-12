@@ -1,17 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<mule xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd ">
-    <http:listener-config name="indigo-flights-sapi-httpListenerConfig">
-        <http:listener-connection host="0.0.0.0" port="8081" />
-    </http:listener-config>
-    <apikit:config name="indigo-flights-sapi-config" api="resource::697af2f9-4e10-406c-a7b1-d8ecfd14aca2:indigo-flights-sapi:1.0.0:raml:zip:indigo-flights-sapi.raml" outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" />
+<mule xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd ">
+    <apikit:config name="indigo-flights-sapi-config" api="resource::697af2f9-4e10-406c-a7b1-d8ecfd14aca2:indigo-flights-sapi:1.0.1:raml:zip:indigo-flights-sapi.raml" outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" />
     <flow name="indigo-flights-sapi-main">
-        <http:listener config-ref="indigo-flights-sapi-httpListenerConfig" path="/api/*">
+        <http:listener path="/api/*" config-ref="api-httpListenerConfig">
             <http:response statusCode="#[vars.httpStatus default 200]">
-                <http:headers>#[vars.outboundHeaders default {}]</http:headers>
+                <http:headers><![CDATA[#[vars.outboundHeaders default {}]]]></http:headers>
             </http:response>
             <http:error-response statusCode="#[vars.httpStatus default 500]">
-                <http:body>#[payload]</http:body>
-                <http:headers>#[vars.outboundHeaders default {}]</http:headers>
+                <http:body><![CDATA[#[payload]]]></http:body>
+                <http:headers><![CDATA[#[vars.outboundHeaders default {}]]]></http:headers>
             </http:error-response>
         </http:listener>
         <apikit:router config-ref="indigo-flights-sapi-config" />
@@ -97,13 +94,13 @@ output application/json
         </error-handler>
     </flow>
     <flow name="indigo-flights-sapi-console">
-        <http:listener config-ref="indigo-flights-sapi-httpListenerConfig" path="/console/*">
+        <http:listener path="/console/*" config-ref="api-httpListenerConfig">
             <http:response statusCode="#[vars.httpStatus default 200]">
-                <http:headers>#[vars.outboundHeaders default {}]</http:headers>
+                <http:headers><![CDATA[#[vars.outboundHeaders default {}]]]></http:headers>
             </http:response>
             <http:error-response statusCode="#[vars.httpStatus default 500]">
-                <http:body>#[payload]</http:body>
-                <http:headers>#[vars.outboundHeaders default {}]</http:headers>
+                <http:body><![CDATA[#[payload]]]></http:body>
+                <http:headers><![CDATA[#[vars.outboundHeaders default {}]]]></http:headers>
             </http:error-response>
         </http:listener>
         <apikit:console config-ref="indigo-flights-sapi-config" />
@@ -167,45 +164,7 @@ output application/json
         </ee:transform>
     </flow>
     <flow name="get:\flights:indigo-flights-sapi-config">
-        <ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
-            <ee:message>
-                <ee:set-payload><![CDATA[%dw 2.0
-output application/json
----
-[
-  {
-    flightId: 2214,
-    flightCode: "6E",
-    departureDate: "2021/09/26",
-    departureTime: "09:00",
-    source: "delhi",
-    destination: "mumbai",
-    availableSeats: 15,
-    price: 5000,
-    currency: "INR",
-    plane: {
-      "type": "Boeing 737",
-      totalSeats: 150
-    }
-  }, 
-  {
-    flightId: 2243,
-    flightCode: "6E",
-    departureDate: "2021/09/26",
-    departureTime: "22:00",
-    source: "delhi",
-    destination: "mumbai",
-    availableSeats: 100,
-    price: 4000,
-    currency: "INR",
-    plane: {
-      "type": "Boeing 777",
-      totalSeats: 300
-    }
-  }
-]]]></ee:set-payload>
-            </ee:message>
-        </ee:transform>
+        <flow-ref doc:name="getFlightsFlow" doc:id="9ef35512-574b-45ba-b680-8b79aa979ea4" name="getFlightsFlow" />
     </flow>
     <flow name="get:\bookings\(bookingId):indigo-flights-sapi-config">
         <ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core">
@@ -234,33 +193,7 @@ output application/json
         </ee:transform>
     </flow>
     <flow name="get:\flights\(flightId):indigo-flights-sapi-config">
-        <ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core">
-            <ee:variables>
-                <ee:set-variable variableName="flightId">attributes.uriParams.'flightId'</ee:set-variable>
-            </ee:variables>
-        </ee:transform>
-        <ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
-            <ee:message>
-                <ee:set-payload><![CDATA[%dw 2.0
-output application/json
----
-{
-  flightId: 2312,
-  flightCode: "6E",
-  departureDate: "2021/10/26",
-  departureTime: "09:00",
-  source: "delhi",
-  destination: "kolkata",
-  availableSeats: 120,
-  price: 3000,
-  currency: "INR",
-  plane: {
-    "type": "Boeing 737",
-    totalSeats: 150
-  }
-}]]></ee:set-payload>
-            </ee:message>
-        </ee:transform>
+        <flow-ref doc:name="getFlightsByIdFlow" doc:id="ba949d2d-88dc-4448-9a2e-bf8a5b769f1b" name="getFlightsByIdFlow"/>
     </flow>
     <flow name="post:\bookings:application\json:indigo-flights-sapi-config">
         <ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">

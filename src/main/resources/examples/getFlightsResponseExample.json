@@ -1,0 +1,32 @@
+[
+  {
+    "flightId": 2214,
+    "flightCode": "6E",
+    "departureDate": "2021/09/26",
+    "departureTime": "09:00",
+    "source": "delhi",
+    "destination": "mumbai",
+    "availableSeats": 15,
+    "price": 5000,
+    "currency": "INR",
+    "plane": {
+      "type": "Boeing 737",
+      "totalSeats": 150
+    }
+  },
+  {
+    "flightId": 2243,
+    "flightCode": "6E",
+    "departureDate": "2021/09/26",
+    "departureTime": "22:00",
+    "source": "delhi",
+    "destination": "mumbai",
+    "availableSeats": 100,
+    "price": 4000,
+    "currency": "INR",
+    "plane": {
+      "type": "Boeing 777",
+      "totalSeats": 300
+    }
+  }
+]

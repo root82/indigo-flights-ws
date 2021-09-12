@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:db="http://www.mulesoft.org/schema/mule/db"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<flow name="getFlightsFlow" doc:id="07b7077f-8e19-4926-ac22-bd335af7c217" >
+		<set-variable value="#[{&#10;	source: upper(message.attributes.queryParams.source),&#10;	destination: upper(message.attributes.queryParams.destination)&#10;}]" doc:name="sourceAndDestination" doc:id="81072dbe-a0b7-490a-8427-c95e8871228f" variableName="sourceAndDestination"/>
+		<db:select doc:name="selectFlights" doc:id="b0174a1a-198c-452b-a0ab-201bbad717f4" config-ref="db-postgresqlConfig">
+			<db:sql ><![CDATA[SELECT * FROM flights f, plane_type pt where f.src = :source and f.destination = :destination and pt.id = f.planetypeid ]]></db:sql>
+			<db:input-parameters ><![CDATA[#[{
+	source: vars.sourceAndDestination.source,
+	destination: vars.sourceAndDestination.destination
+}]]]></db:input-parameters>
+		</db:select>
+		<ee:transform doc:name="Transform Message" doc:id="2c9a6bc4-af5f-4e1a-8048-fe3ea24c8cd7" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload map ( payload01 , indexOfPayload01 ) -> {
+	flightId: payload01.flightid as Number,
+	flightCode: payload01.flightcode default "",
+	departureDate: payload01.departuredate default "",
+	departureTime: payload01.departuretime default "",
+	source: payload01.src default "",
+	destination: payload01.destination default "",
+	availableSeats: payload01.availableseats as Number default 0,
+	price: payload01.price as Number default 0,
+	currency: payload01.currency default "",
+	plane: {
+		"type": payload01.flighttype,
+		totalSeats: payload01.total_seats as Number default 0
+	}
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="getFlightsByIdFlow" doc:id="c5f66d2d-7119-46c8-881e-3e486f5781ae" >
+		<db:select doc:name="selectFlight" doc:id="1d8d2fad-7264-4c53-94f2-c1c9822c0ae8" config-ref="db-postgresqlConfig">
+			<db:sql ><![CDATA[SELECT * FROM flights f, plane_type pt where f.flightid = :flightId and pt.id = f.planetypeid ]]></db:sql>
+			<db:input-parameters ><![CDATA[#[{
+	flightId: message.attributes.uriParams.flightId
+}]]]></db:input-parameters>
+		</db:select>
+		<ee:transform doc:name="Transform Message" doc:id="36489f6d-2dd4-418a-a941-ee11369b5242" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	flightId: payload[0].flightid as Number default 0,
+	flightCode: payload[0].flightcode default "",
+	departureDate: payload[0].departuredate default "",
+	departureTime: payload[0].departuretime default "",
+	source: payload[0].src default "",
+	destination: payload[0].destination default "",
+	availableSeats: payload[0].availableseats as Number default 0,
+	price: payload[0].price as Number default 0,
+	currency: payload[0].currency default "",
+	plane: {
+		"type": payload[0].flighttype,
+		totalSeats: payload[0].total_seats as Number default 0
+	}
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+</mule>

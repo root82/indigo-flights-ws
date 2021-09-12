@@ -1,0 +1,14 @@
+http:
+  port: "8081"
+
+postgresql:
+  url: "jdbc:postgresql://chunee.db.elephantsql.com:5432/qowhmrqx"
+  className: "org.postgresql.Driver"
+  userName: "qowhmrqx"
+  password: "jC_tyijcRq8S7XkzealcOSROHGL1rGLJ"
+  
+#postgresql:
+#  url: "jdbc:postgresql://localhost:5432/indigo-hotels"
+#  className: "org.postgresql.Driver"
+#  username: "murali"
+#  password: "password"
