@@ -121,7 +121,7 @@ output application/json
         </error-handler>
     </flow>
     <flow name="put:\bookings\(bookingId):application\json:indigo-flights-sapi-config" doc:id="6eddd8c7-6a10-468c-a55a-e3338be9dc67">
-		<flow-ref doc:name="putBookingByBookingIdFlow" doc:id="b36a66cc-b570-42d5-820d-249f05645b5b" name="updateBookingByBookingIdFlow"/>
+		<flow-ref doc:name="updateBookingByBookingIdFlow" doc:id="b36a66cc-b570-42d5-820d-249f05645b5b" name="updateBookingByBookingIdFlow"/>
     </flow>
     <flow name="delete:\bookings\(bookingId):indigo-flights-sapi-config">
 		<flow-ref doc:name="deleteBookingByBookingIdFlow" doc:id="ae210fbf-87eb-4269-a3ac-1d70b82ba243" name="deleteBookingByBookingIdFlow"/>

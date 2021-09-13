@@ -116,7 +116,7 @@ output application/json
 		</ee:transform>
 	</flow>
 	<flow name="updateBookingByBookingIdFlow" doc:id="b962cd00-0744-46f7-9b92-a52850af61e6" >
-		<set-variable value="#[message.attributes.uriParams.bookingId]" doc:name="bookingid" doc:id="5c5fe29b-e915-4906-a270-905dc793f679" variableName="bookingidVar"/>
+		<set-variable value="#[message.attributes.uriParams.bookingId]" doc:name="bookingId" doc:id="5c5fe29b-e915-4906-a270-905dc793f679" variableName="bookingId"/>
 		<db:update doc:name="updateBookingDetails" doc:id="d83a5cd2-1349-4258-916c-654ff2c69afd" config-ref="db-postgresqlConfig">
 			<db:sql ><![CDATA[update flight_booking
 set flightid = :flightid ,
@@ -131,23 +131,23 @@ currency= :currency
 where bookingid= :bookingid ;
 ]]></db:sql>
 			<db:input-parameters ><![CDATA[#[{
-flightid: message.payload.flightId,
-flightcode: message.payload.flightCode ,
-departuredate: message.payload.departureDate, 
-departuretime: message.payload.departureTime ,
-passengername: message.payload.passengerName, 
-passengeridproof: message.payload.passengerIdProof, 
-seatsbooked: message.payload.seatsBooked as String default "", 
-priceperseat: message.payload.pricePerSeat, 
-currency: message.payload.currency , 
-bookingid: vars.bookingidVar
+	flightid: message.payload.flightId,
+	flightcode: message.payload.flightCode ,
+	departuredate: message.payload.departureDate, 
+	departuretime: message.payload.departureTime ,
+	passengername: message.payload.passengerName, 
+	passengeridproof: message.payload.passengerIdProof, 
+	seatsbooked: message.payload.seatsBooked as String default "", 
+	priceperseat: message.payload.pricePerSeat, 
+	currency: message.payload.currency , 
+	bookingid: vars.bookingId
 }]]]></db:input-parameters>
 		</db:update>
 		<db:select doc:name="selectBookingDetails" doc:id="2bf8d086-fb2e-426e-ba92-617023617e57" config-ref="db-postgresqlConfig">
 			<db:sql ><![CDATA[select * from flight_booking
 where bookingid= :bookingid;]]></db:sql>
 			<db:input-parameters ><![CDATA[#[{
-	bookingid: vars.bookingidVar
+	bookingid: vars.bookingId
 }]]]></db:input-parameters>
 		</db:select>
 		<ee:transform doc:name="Transform Message" doc:id="0d87c553-93b6-4002-b880-13e8ed2e6735" >
@@ -177,16 +177,16 @@ output application/json
 ,pricePerSeat,currency,bookingdate)values(:flightId,:flightCode,:departureDate,:departureTime,:passengerName,:passengerIdProof,:seatsBooked
 ,:pricePerSeat,:currency,:bookingdate)]]></db:sql>
 			<db:input-parameters ><![CDATA[#[{
-flightId: message.payload.flightId,
-flightCode: message.payload.flightCode,
-departureDate: message.payload.departureDate,
-departureTime: message.payload.departureTime,
-passengerName: message.payload.passengerName,
-passengerIdProof: message.payload.passengerIdProof,
-seatsBooked: message.payload.seatsBooked as String default "",
-pricePerSeat: message.payload.pricePerSeat as String default "",
-currency: message.payload.currency,
-bookingdate: message.payload.bookingdate
+	flightId: message.payload.flightId,
+	flightCode: message.payload.flightCode,
+	departureDate: message.payload.departureDate,
+	departureTime: message.payload.departureTime,
+	passengerName: message.payload.passengerName,
+	passengerIdProof: message.payload.passengerIdProof,
+	seatsBooked: message.payload.seatsBooked as String default "",
+	pricePerSeat: message.payload.pricePerSeat as String default "",
+	currency: message.payload.currency,
+	bookingdate: message.payload.bookingdate
 }]]]></db:input-parameters>
 		</db:insert>
 		<db:select doc:name="selectBookingDetails" doc:id="22a481c0-222f-4a2e-84e6-fb1b45aff397" config-ref="db-postgresqlConfig">
