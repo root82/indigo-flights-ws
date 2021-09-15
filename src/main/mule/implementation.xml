@@ -22,7 +22,6 @@ output application/json
 payload map ( payload01 , indexOfPayload01 ) -> {
 	flightId: payload01.flightid as Number,
 	flightCode: payload01.flightcode default "",
-	departureDate: payload01.departuredate default "",
 	departureTime: payload01.departuretime default "",
 	source: payload01.src default "",
 	destination: payload01.destination default "",
@@ -52,7 +51,6 @@ output application/json
 {
 	flightId: payload[0].flightid as Number default 0,
 	flightCode: payload[0].flightcode default "",
-	departureDate: payload[0].departuredate default "",
 	departureTime: payload[0].departuretime default "",
 	source: payload[0].src default "",
 	destination: payload[0].destination default "",

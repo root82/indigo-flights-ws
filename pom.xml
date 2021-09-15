@@ -74,7 +74,7 @@
 		<dependency>
 			<groupId>697af2f9-4e10-406c-a7b1-d8ecfd14aca2</groupId>
 			<artifactId>indigo-flights-sapi</artifactId>
-			<version>1.0.1</version>
+			<version>1.0.2</version>
 			<classifier>raml</classifier>
 			<type>zip</type>
 		</dependency>

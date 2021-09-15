@@ -2,9 +2,9 @@
 <types:mule xmlns:types="http://www.mulesoft.org/schema/mule/types">
   <types:catalog>
     <types:type name="getFlightsResponseExample" format="json">
-      <types:shape format="weave" example="examples/getFlightsResponseExample.json"><![CDATA[%dw 2.0
+      <types:shape format="weave" example="examples/getFlightsResponseExample-1.json"><![CDATA[%dw 2.0
 
-type getFlightsResponseExample = Array<{|  flightId: Number {"typeId": "int"},   flightCode: String,   departureDate: String,   departureTime: String,   source: String,   destination: String,   availableSeats: Number {"typeId": "int"},   price: Number {"typeId": "int"},   currency: String,   plane: {|    "type": String,     totalSeats: Number {"typeId": "int"}  |}|}> {"example": "[{\\\"flightId\\\":2214,\\\"flightCode\\\":\\\"6E\\\",\\\"departureDate\\\":\\\"2021\\/09\\/26\\\",\\\"departureTime\\\":\\\"09:00\\\",\\\"source\\\":\\\"delhi\\\",\\\"destination\\\":\\\"mumbai\\\",\\\"availableSeats\\\":15,\\\"price\\\":5000,\\\"currency\\\":\\\"INR\\\",\\\"plane\\\":{\\\"type\\\":\\\"Boeing 737\\\",\\\"totalSeats\\\":150}},{\\\"flightId\\\":2243,\\\"flightCode\\\":\\\"6E\\\",\\\"departureDate\\\":\\\"2021\\/09\\/26\\\",\\\"departureTime\\\":\\\"22:00\\\",\\\"source\\\":\\\"delhi\\\",\\\"destination\\\":\\\"mumbai\\\",\\\"availableSeats\\\":100,\\\"price\\\":4000,\\\"currency\\\":\\\"INR\\\",\\\"plane\\\":{\\\"type\\\":\\\"Boeing 777\\\",\\\"totalSeats\\\":300}}]"}
+type getFlightsResponseExample = Array<{|  flightId: Number {"typeId": "int"},   flightCode: String,   departureTime: String,   source: String,   destination: String,   availableSeats: Number {"typeId": "int"},   price: Number {"typeId": "int"},   currency: String,   plane: {|    "type": String,     totalSeats: Number {"typeId": "int"}  |}|}> {"example": "[{\\\"flightId\\\":2214,\\\"flightCode\\\":\\\"6E\\\",\\\"departureTime\\\":\\\"09:00\\\",\\\"source\\\":\\\"delhi\\\",\\\"destination\\\":\\\"mumbai\\\",\\\"availableSeats\\\":15,\\\"price\\\":5000,\\\"currency\\\":\\\"INR\\\",\\\"plane\\\":{\\\"type\\\":\\\"Boeing 737\\\",\\\"totalSeats\\\":150}},{\\\"flightId\\\":2243,\\\"flightCode\\\":\\\"6E\\\",\\\"departureTime\\\":\\\"22:00\\\",\\\"source\\\":\\\"delhi\\\",\\\"destination\\\":\\\"mumbai\\\",\\\"availableSeats\\\":100,\\\"price\\\":4000,\\\"currency\\\":\\\"INR\\\",\\\"plane\\\":{\\\"type\\\":\\\"Boeing 777\\\",\\\"totalSeats\\\":300}}]"}
 
 ]]></types:shape>
     </types:type>
@@ -410,15 +410,6 @@ type postBookingResponseExample = {|
 ]]></types:shape>
     </types:type>
   </types:catalog>
-  <types:enrichment select="#07b7077f-8e19-4926-ac22-bd335af7c217">
-    <types:processor-declaration>
-      <types:output-event>
-        <types:message>
-          <types:payload type="getFlightsResponseExample"/>
-        </types:message>
-      </types:output-event>
-    </types:processor-declaration>
-  </types:enrichment>
   <types:enrichment select="#c5f66d2d-7119-46c8-881e-3e486f5781ae">
     <types:processor-declaration>
       <types:input-event>
@@ -433,8 +424,7 @@ type postBookingResponseExample = {|
       </types:input-event>
       <types:output-event>
         <types:message>
-          <types:payload type="getFlightResponseExample"/>
-          <types:attributes type="auto_c5f66d2d-7119-46c8-881e-3e486f5781ae_Output-Attributes"/>
+          <types:payload type="getFlightsResponseExample"/>
         </types:message>
         <types:variables>
           <types:variable name="outboundHeaders" type="auto_c5f66d2d-7119-46c8-881e-3e486f5781ae_Output-Variables-outboundHeaders"/>
@@ -519,6 +509,15 @@ type postBookingResponseExample = {|
       <types:output-event>
         <types:message>
           <types:payload type="postBookingResponseExample"/>
+        </types:message>
+      </types:output-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#07b7077f-8e19-4926-ac22-bd335af7c217">
+    <types:processor-declaration>
+      <types:output-event>
+        <types:message>
+          <types:payload type="getFlightsResponseExample"/>
         </types:message>
       </types:output-event>
     </types:processor-declaration>
