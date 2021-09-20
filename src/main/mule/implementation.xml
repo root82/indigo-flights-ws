@@ -211,7 +211,8 @@ output application/json
 	seatsBooked: payload[0].seatsbooked as Number default 0,
 	pricePerSeat: payload[0].priceperseat as Number default 0,
 	currency: payload[0].currency default "",
-	bookingdate: payload[0].bookingdate default ""
+	bookingdate: payload[0].bookingdate default "",
+	bookingId: payload[0].bookingid
 }]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
