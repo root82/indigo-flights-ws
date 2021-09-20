@@ -94,12 +94,13 @@ output application/json
 		</ee:transform>
 	</flow>
 	<flow name="deleteBookingByBookingIdFlow" doc:id="ff08700b-b5d5-426a-9ff3-e554dc81817f" >
+		<set-variable value="#[message.attributes.uriParams.bookingId]" doc:name="bookingId" doc:id="01a80139-ee37-4fc6-b0a2-88265fdc1ace" variableName="bookingId"/>
 		<db:update doc:name="updateCancellationStatus" doc:id="72a8fd56-4134-4cae-980a-b41242afcd21" config-ref="db-postgresqlConfig">
 			<db:sql ><![CDATA[update flight_booking set
 cancellation_status ='Y'
 where bookingid= :bookingid]]></db:sql>
 			<db:input-parameters ><![CDATA[#[{
-	bookingid: message.attributes.uriParams.bookingId
+	bookingid: vars.bookingId
 }]]]></db:input-parameters>
 		</db:update>
 		<ee:transform doc:name="Transform Message" doc:id="0608655f-d769-44f0-b753-37cddf15f8df" >
@@ -108,7 +109,10 @@ where bookingid= :bookingid]]></db:sql>
 output application/json
 ---
 {
-	message: "Booking Cancelled Successfully"
+	message: 
+		if (payload.affectedRows == 0)
+			"Booking Id: " ++ (vars.bookingId) ++ " not available"
+		else "Booking Cancelled Successfully"
 }]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
